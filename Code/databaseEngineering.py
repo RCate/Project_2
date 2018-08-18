@@ -4,8 +4,6 @@ import pandas as pd
 import pymongo
 import json
 
-
-
 def import_enrollment_content(filepath, collection_name):
     mng_client = pymongo.MongoClient('localhost', 27017)
     mng_db = mng_client['project2'] # Mongo db name
@@ -44,19 +42,13 @@ def import_tuition_content(filepath, collection_name):
 
 if __name__ == "__main__":
     # csv files to import
-    HS_graduates_by_state = 'PublicHSGraduatesByState_Clean.csv'
-    pct_chg_enroll_4year_by_state = '4YearEnrollmentByState_percent.csv'
-    pct_chg_enroll_2year_by_state = '2YearEnrollmentByState_percent.csv'
+    HS_graduates_pct_chg_by_state = 'PublicHSGraduatesByState_percent.csv'
+    enroll_4year_pct_chg_by_state = '4YearEnrollmentByState_percent.csv'
+    tuition_4year_pct_chg_by_state = '4YearTuitionByState_percent.csv'
     bachelors_degrees_by_year = 'BachelorsDegreesAwardedByFieldofStudy_Clean.csv'
-    non_bachelors_degrees_by_year = 'NonBachelorsDegreesAwardedByFieldofStudy_Clean.csv'
-    tuition_4year_by_state = '4YearTuitionByState.csv'
-    tuition_2year_by_state = '2YearTuitionByState.csv'
 
     # import csv files
-    import_enrollment_content(HS_graduates_by_state, 'HS_graduates_by_state')
-    import_enrollment_content(pct_chg_enroll_4year_by_state, 'pct_chg_enroll_4year_by_state')
-    import_enrollment_content(pct_chg_enroll_2year_by_state, 'pct_chg_enroll_2year_by_state')
+    import_enrollment_content(HS_graduates_pct_chg_by_state, 'HS_graduates_pct_chg_by_state')
+    import_enrollment_content(enroll_4year_pct_chg_by_state, 'enroll_4year_pct_chg_by_state')
+    import_tuition_content(tuition_4year_pct_chg_by_state, 'tuition_4year_pct_chg_by_state')
     import_degree_content(bachelors_degrees_by_year, 'bachelors_degrees_by_year')
-    import_degree_content(non_bachelors_degrees_by_year, 'non_bachelors_degrees_by_year')
-    import_tuition_content(tuition_4year_by_state, 'tuition_4year_by_state')
-    import_tuition_content(tuition_2year_by_state, 'tuition_2year_by_state')
