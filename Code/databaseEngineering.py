@@ -46,9 +46,11 @@ if __name__ == "__main__":
     enroll_4year_pct_chg_by_state = '4YearEnrollmentByState_percent.csv'
     tuition_4year_pct_chg_by_state = '4YearTuitionByState_percent.csv'
     bachelors_degrees_by_year = 'BachelorsDegreesAwardedByFieldofStudy_Clean.csv'
+    hs_grad_geo = 'hs_grad_geo.csv'
 
     # import csv files
     import_enrollment_content(HS_graduates_pct_chg_by_state, 'HS_graduates_pct_chg_by_state')
     import_enrollment_content(enroll_4year_pct_chg_by_state, 'enroll_4year_pct_chg_by_state')
+    import_enrollment_content(hs_grad_geo, 'hs_grad_geo')
     import_tuition_content(tuition_4year_pct_chg_by_state, 'tuition_4year_pct_chg_by_state')
     import_degree_content(bachelors_degrees_by_year, 'bachelors_degrees_by_year')
