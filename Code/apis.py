@@ -27,7 +27,7 @@ def home():
 # Returns the JSON representation of the dictionary.
 @app.route("/api/v1.0/HSGrads")
 def HS_Grads_by_state():
-    hs_results = list(mongo.db.HS_graduates_pct_chg_by_state.find({}, {'_id': False}))
+    hs_results = list(mongo.db.hs_grad_geo.find({}, {'_id': False}))
     return jsonify(hs_results)
 
 # /api/v1.0/4YrEnrollPctChange
