@@ -29,9 +29,11 @@ function ready(error, mapData, csvData) {
     acc[data.State] = data
     return acc
   },{})
+
   mapData.features.forEach(function(feature){
     feature.enrollment = csvData_obj[feature.properties.name]
   })
+  
   console.log(mapData);
   console.log(csvData);
   
