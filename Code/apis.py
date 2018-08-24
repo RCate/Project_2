@@ -1,5 +1,5 @@
 # import necessary libraries
-from flask import Flask, jsonify
+from flask import (Flask, jsonify, render_template)
 from flask_pymongo import PyMongo
 
 # create instance of Flask app
@@ -12,15 +12,19 @@ mongo = PyMongo(app)
 
 @app.route("/")
 def home():
-    return (
-        f"<h1>Welcome to Project 2's APIs!</h1>"
-        f"<p>Usage:</p>"
-        f"<p>/api/v1.0/HSGrads</p>"
-        f"<p>/api/v1.0/4YrEnrollPctChange</p>"
-        f"<p>/api/v1.0/Tuition4YearPctChange</p>"
-        f"<p>/api/v1.0/BachelorsDegrees</p>"
+    return render_template("proj2.index.html")
+
+# @app.route("/")
+# def home():
+#     return (
+#         f"<h1>Welcome to Project 2's APIs!</h1>"
+#         f"<p>Usage:</p>"
+#         f"<p>/api/v1.0/HSGrads</p>"
+#         f"<p>/api/v1.0/4YrEnrollPctChange</p>"
+#         f"<p>/api/v1.0/Tuition4YearPctChange</p>"
+#         f"<p>/api/v1.0/BachelorsDegrees</p>"
     
-    )
+#     )
 
 # /api/v1.0/HSGrads
 # Query for the percent change YoY of High School graduates by state for 2009-2015
@@ -53,6 +57,8 @@ def Bach_degrees_by_year():
 def Tuition4Year_by_state():
     tuition4Year_results = list(mongo.db.tuition_4year_pct_chg_by_state.find({}, {'_id': False}))
     return jsonify(tuition4Year_results)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
