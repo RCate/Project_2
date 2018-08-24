@@ -12,19 +12,15 @@ mongo = PyMongo(app)
 
 @app.route("/")
 def home():
-    return render_template("proj2.index.html")
-
-# @app.route("/")
-# def home():
-#     return (
-#         f"<h1>Welcome to Project 2's APIs!</h1>"
-#         f"<p>Usage:</p>"
-#         f"<p>/api/v1.0/HSGrads</p>"
-#         f"<p>/api/v1.0/4YrEnrollPctChange</p>"
-#         f"<p>/api/v1.0/Tuition4YearPctChange</p>"
-#         f"<p>/api/v1.0/BachelorsDegrees</p>"
+    return (
+        f"<h1>Welcome to Project 2's APIs!</h1>"
+        f"<p>Usage:</p>"
+        f"<p>/api/v1.0/HSGrads</p>"
+        f"<p>/api/v1.0/4YrEnrollPctChange</p>"
+        f"<p>/api/v1.0/Tuition4YearPctChange</p>"
+        f"<p>/api/v1.0/BachelorsDegrees</p>"
     
-#     )
+    )
 
 # /api/v1.0/HSGrads
 # Query for the percent change YoY of High School graduates by state for 2009-2015
