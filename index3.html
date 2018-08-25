@@ -6,137 +6,97 @@
 }
 
 </style>
+<svg width="1800" height="1000"></svg>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 
-// When the browser window is resized, makeResponsive() is called.
-d3.select(window).on("resize", makeResponsive);
+var svg = d3.select("svg"),
+    margin = {top: 20, right: 20, bottom: 300, left: 40},
+    width = +svg.attr("width") - margin.left - margin.right,
+    height = +svg.attr("height") - margin.top - margin.bottom,
+    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-// When the browser loads, makeResponsive() is called.
-makeResponsive();
+var x0 = d3.scaleBand()
+    .rangeRound([0, width])
+    .paddingInner(0.1);
 
-// The code for the chart is wrapped inside a function that
-// automatically resizes the chart
-function makeResponsive() {
-    // if the SVG area isn't empty when the browser loads,
-    // remove it and replace it with a resized version of the chart
-    var svgArea = d3.select("body").select("svg");
+var x1 = d3.scaleBand()
+    .padding(0.05);
 
-    // clear svg is not empty
-    if (!svgArea.empty()) {
-        svgArea.remove();
-    }
-    
-    // SVG wrapper dimensions are determined by the current width and
-    // height of the browser window.
-    var svgWidth = window.innerWidth;
-    var svgHeight = window.innerHeight;
+var y = d3.scaleLinear()
+    .rangeRound([height, 0]);
 
-    // Define the chart's margins as an object
-    var chartMargin = {
-        top: 30,
-        right: 30,
-        bottom: 300,
-        left: 30
-    };
+var z = d3.scaleOrdinal()
+    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
-    // Define dimensions of the chart area
-    var chartWidth = svgWidth - chartMargin.left - chartMargin.right;
-    var chartHeight = svgHeight - chartMargin.top - chartMargin.bottom;
+d3.csv("BachelorsDegreesAwardedByFieldofStudy_Clean.csv", function(d, i, columns) {
+    for (var i = 1, n = columns.length; i < n; ++i) d[columns[i]] = +d[columns[i]];
+    return d;
+    }, function(error, data) {
+    if (error) throw error;
 
-    // Select body, append SVG area to it, and set the dimensions
-    var svg = d3.select("body")
-        .append("svg")
-        .attr("height", svgHeight)
-        .attr("width", svgWidth);
+    var keys = data.columns.slice(1);
 
-    // Append a group to the SVG area and shift ('translate') it to the right and to the bottom
-    var chartGroup = svg.append("g")
-        .attr("transform", `translate(${chartMargin.left}, ${chartMargin.top})`);
+    x0.domain(data.map(function(d) { return d.Field; }));
+    x1.domain(keys).rangeRound([0, x0.bandwidth()]);
+    y.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
 
-    var x0 = d3.scaleBand()
-        .rangeRound([0, chartWidth])
-        .paddingInner(0.1);
+    g.append("g")
+        .selectAll("g")
+        .data(data)
+        .enter().append("g")
+        .attr("transform", function(d) { return "translate(" + x0(d.Field) + ",0)"; })
+        .selectAll("rect")
+        .data(function(d) { return keys.map(function(key) { return {key: key, value: d[key]}; }); })
+        .enter().append("rect")
+        .attr("x", function(d) { return x1(d.key); })
+        .attr("y", function(d) { return y(d.value); })
+        .attr("width", x1.bandwidth())
+        .attr("height", function(d) { return height - y(d.value); })
+        .attr("fill", function(d) { return z(d.key); });
 
-    var x1 = d3.scaleBand()
-        .padding(0.05);
-
-    var y = d3.scaleLinear()
-        .rangeRound([chartHeight, 0]);
-
-    var z = d3.scaleOrdinal()
-        .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-
-    d3.csv("BachelorsDegreesAwardedByFieldofStudy_Clean.csv", function(d, i, columns) {
-        for (var i = 1, n = columns.length; i < n; ++i) d[columns[i]] = +d[columns[i]];
-        return d;
-        }, function(error, data) {
-        if (error) throw error;
-
-        var keys = data.columns.slice(1);
-
-        x0.domain(data.map(function(d) { return d.Field; }));
-        x1.domain(keys).rangeRound([0, x0.bandwidth()]);
-        y.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
-
-        g.append("g")
-            .selectAll("g")
-            .data(data)
-            .enter().append("g")
-            .attr("transform", function(d) { return "translate(" + x0(d.Field) + ",0)"; })
-            .selectAll("rect")
-            .data(function(d) { return keys.map(function(key) { return {key: key, value: d[key]}; }); })
-            .enter().append("rect")
-            .attr("x", function(d) { return x1(d.key); })
-            .attr("y", function(d) { return y(d.value); })
-            .attr("width", x1.bandwidth())
-            .attr("height", function(d) { return height - y(d.value); })
-            .attr("fill", function(d) { return z(d.key); });
-
-        g.append("g")
-            .attr("class", "axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x0))
-            .selectAll("text")
-                .attr("font-size", 14)
-                .attr("transform", "rotate(-65)" )
-                .style("text-anchor", "end");
-    ;
-
-        g.append("g")
-            .attr("class", "axis")
-            .call(d3.axisLeft(y).ticks(null, "s"))
-            .append("text")
-            .attr("x", 2)
-            .attr("y", y(y.ticks().pop()) + 0.5)
-            .attr("dy", "0.32em")
-            .attr("fill", "#000")
-            .attr("font-weight", "bold")
-            .attr("text-anchor", "start")
+    g.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x0))
+        .selectAll("text")
             .attr("font-size", 14)
-            .text("Degrees Awarded");
+            .attr("transform", "rotate(-65)" )
+            .style("text-anchor", "end");
+;
 
-        var legend = g.append("g")
-            .attr("font-family", "sans-serif")
-            .attr("font-size", 10)
-            .attr("text-anchor", "end")
-            .selectAll("g")
-            .data(keys.slice().reverse())
-            .enter().append("g")
-            .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+    g.append("g")
+        .attr("class", "axis")
+        .call(d3.axisLeft(y).ticks(null, "s"))
+        .append("text")
+        .attr("x", 2)
+        .attr("y", y(y.ticks().pop()) + 0.5)
+        .attr("dy", "0.32em")
+        .attr("fill", "#000")
+        .attr("font-weight", "bold")
+        .attr("text-anchor", "start")
+        .text("Degrees Awarded");
 
-        legend.append("rect")
-            .attr("x", width - 19)
-            .attr("width", 19)
-            .attr("height", 19)
-            .attr("fill", z);
+    var legend = g.append("g")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", 10)
+        .attr("text-anchor", "end")
+        .selectAll("g")
+        .data(keys.slice().reverse())
+        .enter().append("g")
+        .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
-        legend.append("text")
-            .attr("x", width - 24)
-            .attr("y", 9.5)
-            .attr("dy", "0.32em")
-            .attr("font-size", 24)
-            .text(function(d) { return d; });
-    });
-}
+    legend.append("rect")
+        .attr("x", width - 19)
+        .attr("width", 19)
+        .attr("height", 19)
+        .attr("fill", z);
+
+    legend.append("text")
+        .attr("x", width - 24)
+        .attr("y", 9.5)
+        .attr("dy", "0.32em")
+        .text(function(d) { return d; });
+});
+
 </script>
