@@ -1,35 +1,65 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="UTF-8">
-    <title>US Map Stuff</title>
 
-    <!-- Leaflet JS & CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+<html lang="en">
 
-    <!-- d3 JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
-    <script src="https://d3js.org/d3-request.v1.min.js"></script>
-    <script src="https://d3js.org/d3-queue.v3.min.js"></script>
-    <!-- <script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    var q = d3.queue();
+  <title>Project 2</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
 
-    </script>  -->
+<body>
+  <div class="container">
+  
+      <h1>Debt and the 4 Year Degree</h1>
+    </a>
+    <a href="index.html">
+      <button id="home" class="btn btn-default btn-lg">HOME</button>
+    <a href="graphs_page.html">
+      <button id="graphs" class="btn btn-default btn-lg">GRAPHS</button>
+    </a>
+    <a href="index2.html">
+    <button id="geomap" class="btn btn-default btn-lg">GEO MAPS</button>
+    </a>
+    <a href="conclusions_page.html">
+    <button id="conclusions" class="btn btn-default btn-lg">CONCLUSIONS</button>
+    </a>
+    <hr>
 
-    <!-- Our CSS -->
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <img width="600" src="../GraduatePhoto.jpg" alt="Graduate">
 
-  </head>
-  <body>
+    <h3>Contributors</h3>
+    <ul>
+      <li>Rebecca Cate</li>
+      <li>Patrick Lisk</li>
+      <li>Monica James</li>
+      <li>Dustin Garza</li>
 
-    <!-- map div -->
-    <div id="map"></div>
-    <!-- API key -->
-    <script type="text/javascript" src="config.js"></script>
-      <!-- JS  -->
-    <script type="text/javascript" src="logic.js"></script>
+    </ul>
 
-  </body>
+    <h3>Thesis and Summary</h3>
+    <hr> Our team believes that the pursuit of a 4 year degree is becomming cost prohibitive. Using data retrieved from recent
+    enrollment and tuition studies, we suspect that the number of students going into a 4 year degree program is beginning
+    to drop across the United States and that factors, such as ballooning student debt and the presense of affordable alternatives,
+    are driving a significant change to this long-term trend.
+    <hr>
+
+    <h3>Links to Data Sources</h3>
+    <ul>
+      <li>
+        <a href="https://ies.ed.gov" target="_blank">Institute of Educational Sciences</a>
+      </li>
+    </ul>
+
+    <img width="600" src="../Trilogy_HOOK_Pic.png" alt="Graduate">
+  </div>
+</body>
+
 </html>
