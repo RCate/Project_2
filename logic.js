@@ -3,7 +3,8 @@ var myMap = L.map("map", {
   center: [37.09, -95.71],
   zoom: 5
 });
-
+const yearLayer = new L.LayerGroup();
+yearLayer.addTo(myMap)
 // Adding tile layer
 L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
   attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
@@ -44,33 +45,40 @@ function ready(error, mapData, csvData, csvData2) {
   mapData.features.forEach(function(feature){
     feature.enrollment = csvData2_obj[feature.properties.name]
   })
-  
-   
-  function onEachFeature(feature, layer) {
-    if (feature.properties.name !== "Puerto Rico"){
-      var tuition_pct_change = feature.tuition.Y2015 * 100;
-      var enroll_pct_change = feature.enrollment.Y2015 * 100;
-      layer.bindPopup("<h3>" + feature.properties.name +
-        "</h3><hr><p>Tuition Change: " +  parseFloat(tuition_pct_change).toFixed(2) + "%</p>" +
-        "</h3><hr><p>Enrollment Change: " + parseFloat(enroll_pct_change).toFixed(2) + "%</p>");
-    }
-    else { console.log(error)};
-  }
 
-  function style(feature) {
-    if (feature.properties.name !== "Puerto Rico"){
-      return {
-          fillColor: getColor(feature.tuition.Y2015),
-          weight: 2,
-          opacity: 1,
-          color: 'white',
-          dashArray: '3',
-          fillOpacity: 0.7
-      };
+  
+  // var chosenYear = "Y2009"
+   
+  filterYear("Y2009")
+
+  function filterYear(chosenYear) {
+    yearLayer.clearLayers()
+    L.geoJson(mapData, {style: style, onEachFeature: onEachFeature})
+    .addTo(yearLayer);
+    function onEachFeature(feature, layer) {
+      if (feature.properties.name !== "Puerto Rico"){
+        var tuition_pct_change = feature.tuition[chosenYear] * 100;
+        var enroll_pct_change = feature.enrollment[chosenYear] * 100;
+        layer.bindPopup("<h3>" + feature.properties.name +
+          "</h3><hr><p>Tuition Change: " +  parseFloat(tuition_pct_change).toFixed(2) + "%</p>" +
+          "</h3><hr><p>Enrollment Change: " + parseFloat(enroll_pct_change).toFixed(2) + "%</p>");
+      }
+      else { console.log(error)};
+    }
+  
+    function style(feature) {
+      if (feature.properties.name !== "Puerto Rico"){
+        return {
+            fillColor: getColor(feature.tuition[chosenYear]),
+            weight: 2,
+            opacity: 1,
+            color: 'white',
+            dashArray: '3',
+            fillOpacity: 0.7
+        };
+      }
     }
   }
-  
-  L.geoJson(mapData, {style: style, onEachFeature: onEachFeature}).addTo(myMap);
 
   // Colors by tuition magnitude
   function getColor(d) {
@@ -102,4 +110,22 @@ function ready(error, mapData, csvData, csvData2) {
     }
     // Adding legend to the map   
     legend.addTo(myMap);
+
+
+    var dropdown = L.control({position: 'topright'});
+
+    dropdown.onAdd = function (myMap) {
+
+    var div = L.DomUtil.create('div', 'info legend');
+    div.innerHTML = '<select><option value="Y2009">2009</option><option value="Y2015">2015</option>';
+    div.firstChild.onmousedown = div.firstChild.ondblclick = L.DomEvent.stopPropagation;
+    return div;
+
+    }
+    // Adding legend to the map   
+    dropdown.addTo(myMap);
+    dropdown._container.onchange = function() {
+      console.log()
+      filterYear(event.target.value)
+    }
 }
