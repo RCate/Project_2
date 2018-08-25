@@ -97,13 +97,13 @@ function ready(error, mapData, csvData, csvData2) {
 
     var div = L.DomUtil.create('div', 'info legend'),
         grades = [0, .01, .02, .03, .04, .05],
-        labels = [];
+        labels = ["0%", "1%", "2%", "3%", "4%", "5%"];
 
     // loop through our density intervals and generate a label with a colored square for each interval
     for (var i = 0; i < grades.length; i++) {
         div.innerHTML +=
             '<i style="background:' + getColor(grades[i]) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            labels[i] + (labels[i + 1] ? ' &ndash; ' + labels[i + 1] + '<br>' : '+');
     }
 
     return div;
