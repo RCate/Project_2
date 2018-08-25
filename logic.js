@@ -15,7 +15,7 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 // Link to JSON files
 var link1 = "https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json";
 var link2 = "https://raw.githubusercontent.com/RCate/Project_2/master/Resources/Tuition/tuitionPercent.json";
-var link3 = "https://raw.githubusercontent.com/RCate/Project_2/master/Code/4YrEnrollPctChange.json"
+var link3 = "https://raw.githubusercontent.com/RCate/Project_2/master/4YrEnrollPctChange.json"
 
 d3.queue()
   .defer(d3.json, link1)
